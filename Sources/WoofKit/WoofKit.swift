@@ -11,10 +11,10 @@ public class WoofKit {
     
     // MARK: - Internal -
     
-    typealias BreedsListResult = (Result<[Breed], Error>) -> Void
 
     // MARK: - Public -
     
+    public typealias BreedsListResult = (Result<[Breed], Error>) -> Void
     public static let shared: WoofKit = WoofKit()
     
     // MARK: - Custom Types
