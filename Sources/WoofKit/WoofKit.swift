@@ -19,7 +19,7 @@ public class WoofKit {
     
     // MARK: - Custom Types
     
-    enum BreedsEndpoint {
+    enum Endpoint {
         static let baseURL = URL(string: "https://dog.ceo/api/")!
         
         case list
@@ -27,8 +27,8 @@ public class WoofKit {
         
         var url: URL {
             switch self {
-            case .list: return BreedsEndpoint.baseURL.appendingPathComponent("list/all").absoluteURL
-            case .images(let breed): return BreedsEndpoint.baseURL.appendingPathComponent("/breed/\(breed.name)/images")
+            case .list: return Endpoint.baseURL.appendingPathComponent("list/all").absoluteURL
+            case .images(let breed): return Endpoint.baseURL.appendingPathComponent("/breed/\(breed.name)/images")
             }
         }
     }
@@ -46,7 +46,7 @@ public class WoofKit {
     }
     
     public func fetchBreeds(result: @escaping BreedsListResult) {
-        URLSession.shared.dataTask(with: BreedsEndpoint.list.url) { (data, response, error) in
+        URLSession.shared.dataTask(with: URL(string: "https://dog.ceo/api/list/all")!) { (data, response, error) in
             guard let response = response as? HTTPURLResponse,
                   response.statusCode == 200 else {
                 result(.failure(.invalidResponse))
