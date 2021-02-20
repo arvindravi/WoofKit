@@ -7,7 +7,9 @@
 
 import Foundation
 
-public struct Breed: Decodable, Hashable {
+public struct Breed {
     public let name: String
     public let subBreeds: Set<String>
 }
+
+extension Breed: Decodable, Hashable {}
