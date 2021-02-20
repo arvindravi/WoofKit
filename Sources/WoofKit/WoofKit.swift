@@ -27,7 +27,7 @@ public class WoofKit {
         
         var url: URL {
             switch self {
-            case .list: return Endpoint.baseURL.appendingPathComponent("list/all").absoluteURL
+            case .list: return Endpoint.baseURL.appendingPathComponent("breeds/list/all").absoluteURL
             case .images(let breed): return Endpoint.baseURL.appendingPathComponent("/breed/\(breed.name)/images")
             }
         }
@@ -46,14 +46,12 @@ public class WoofKit {
     }
     
     public func fetchBreeds(result: @escaping BreedsListResult) {
-        URLSession.shared.dataTask(with: URL(string: "https://dog.ceo/api/list/all")!) { (data, response, error) in
+        URLSession.shared.dataTask(with: Endpoint.list.url) { (data, response, error) in
             guard let response = response as? HTTPURLResponse,
                   response.statusCode == 200 else {
                 result(.failure(.invalidResponse))
-                print(error)
                 return
             }
-            print(data)
             self.handleData(data: data, result: result)
         }.resume()
     }
