@@ -27,7 +27,7 @@ public class WoofKit {
         
         var url: URL {
             switch self {
-            case .list: return Endpoint.baseURL.appendingPathComponent("breeds/list/all").absoluteURL
+            case .list: return Endpoint.baseURL.appendingPathComponent("breeds/list/all")
             case .images(let breed): return Endpoint.baseURL.appendingPathComponent("/breed/\(breed.name)/images")
             }
         }

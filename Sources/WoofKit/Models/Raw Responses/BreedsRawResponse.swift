@@ -19,9 +19,8 @@ struct BreedsRawResponse {
 extension BreedsRawResponse: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let rawListOfBreeds = try container.decode([String: [String]].self, forKey: .message)
-        print(rawListOfBreeds)
-        message = []
-        status = ""
+        let rawListOfBreeds = try container.decode([String: Set<String>].self, forKey: .message)
+        message = rawListOfBreeds.map(Breed.init)
+        status = try container.decode(String.self, forKey: .status)
     }
 }
