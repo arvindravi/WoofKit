@@ -39,7 +39,7 @@ public class WoofKit {
         public var errorDescription: String? {
             switch self {
             case .invalidResponse: return "Error Fetching Woof Data: Invalid Response"
-            case .failedToDecodeData: return "Failed to decode data"
+            case .failedToDecodeData: return "Error Fetching Woof Data: Failed to decode data"
             }
         }
     }
