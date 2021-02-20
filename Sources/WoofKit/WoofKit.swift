@@ -15,7 +15,8 @@ public class WoofKit {
 
     // MARK: - Public -
     
-    public let shared: WoofKit = WoofKit()
+    public static let shared: WoofKit = WoofKit()
+    
     // MARK: - Custom Types
     
     enum BreedsEndpoint {
