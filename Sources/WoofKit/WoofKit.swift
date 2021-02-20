@@ -46,16 +46,9 @@ public class WoofKit {
     }
     
     public func fetchBreeds(result: @escaping BreedsListResult) {
-        let task = URLSession.shared.dataTask(with: BreedsEndpoint.list.url) { (data, response, error) in
-            guard let response = response as? HTTPURLResponse,
-                  response.statusCode == 200 else {
-                result(.failure(.invalidResponse))
-                return
-            }
-            
+        URLSession.shared.dataTask(with: BreedsEndpoint.list.url.request) { (data, _, _) in
             self.handleData(data: data, result: result)
-        }
-        task.resume()
+        }.resume()
     }
     
     private func handleData(data: Data?, result: @escaping BreedsListResult) {
@@ -71,4 +64,8 @@ public class WoofKit {
         
         result(.success(decoded.message))
     }
+}
+
+private extension URL {
+    var request: URLRequest { URLRequest(url: self) }
 }
