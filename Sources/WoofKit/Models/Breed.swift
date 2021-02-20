@@ -8,6 +8,6 @@
 import Foundation
 
 public struct Breed: Decodable {
-    let name: String
-    let subBreeds: Set<String>
+    public let name: String
+    public let subBreeds: Set<String>
 }
