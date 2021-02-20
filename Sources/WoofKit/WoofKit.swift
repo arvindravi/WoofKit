@@ -1,12 +1,7 @@
 import Foundation
 import UIKit
-import Combine
 
-protocol WoofKitType {
-    func fetchBreeds() -> AnyPublisher<[Breed], Error>
-}
-
-class WoofKit {
+public class WoofKit {
     
     // MARK: - Properties
     
@@ -16,9 +11,11 @@ class WoofKit {
     
     // MARK: - Internal -
     
-    public static let shared: WoofKit = WoofKit()
     typealias BreedsListResult = (Result<[Breed], Error>) -> Void
+
+    // MARK: - Public -
     
+    public let shared: WoofKit = WoofKit()
     // MARK: - Custom Types
     
     enum BreedsEndpoint {
