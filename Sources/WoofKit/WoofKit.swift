@@ -16,7 +16,7 @@ class WoofKit {
     
     // MARK: - Internal -
     
-    static let shared: WoofKit = WoofKit()
+    public static let shared: WoofKit = WoofKit()
     typealias BreedsListResult = (Result<[Breed], Error>) -> Void
     
     // MARK: - Custom Types
