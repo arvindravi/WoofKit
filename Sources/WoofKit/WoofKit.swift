@@ -3,7 +3,7 @@ import UIKit
 
 public class WoofKit {
     
-    // MARK: - Properties
+    // MARK: - Properties -
     
     // MARK: - Private -
     
@@ -11,7 +11,6 @@ public class WoofKit {
     
     // MARK: - Internal -
     
-
     // MARK: - Public -
     
     public typealias BreedsListResult = (Result<[Breed], Error>) -> Void
@@ -45,6 +44,12 @@ public class WoofKit {
         }
     }
     
+    // MARK: - Interface -
+    
+    // MARK: - Functions -
+    
+    // MARK: - Public -
+    
     public func fetchBreeds(result: @escaping BreedsListResult) {
         URLSession.shared.dataTask(with: Endpoint.list.url) { (data, response, error) in
             guard let response = response as? HTTPURLResponse,
@@ -55,6 +60,8 @@ public class WoofKit {
             self.handleData(data: data, result: result)
         }.resume()
     }
+    
+    // MARK: - Private -
     
     private func handleData(data: Data?, result: @escaping BreedsListResult) {
         guard let data = data else {
