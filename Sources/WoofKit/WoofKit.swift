@@ -33,11 +33,11 @@ public class WoofKit {
         }
     }
     
-    enum Error: LocalizedError {
+    public enum Error: LocalizedError {
         case invalidResponse
         case failedToDecodedData
         
-        var errorDescription: String? {
+        public var errorDescription: String? {
             switch self {
             case .invalidResponse: return "Error Fetching Woof Data: Invalid Response"
             case .failedToDecodedData: return "Failed to decode data"
