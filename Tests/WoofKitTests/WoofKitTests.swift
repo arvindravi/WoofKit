@@ -2,14 +2,13 @@ import XCTest
 @testable import WoofKit
 
 final class WoofKitTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(WoofKit().text, "Hello, World!")
+    
+    func test_getsListOfBreeds() {
+        WoofKit.shared.fetchBreeds { result in
+            switch result {
+            case .success(let breeds): print(breeds)
+            case .failure(let error): print(error)
+            }
+        }
     }
-
-    static var allTests = [
-        ("testExample", testExample),
-    ]
 }
