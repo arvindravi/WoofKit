@@ -10,11 +10,11 @@ final class WoofKitTests: XCTestCase {
             case .success(let breeds):
                 print(breeds)
                 XCTAssert(breeds.count > 0)
+                expectation.fulfill()
             case .failure(let error):
                 print(error)
                 XCTFail()
             }
-            expectation.fulfill()
         }
         wait(for: [expectation], timeout: 0.3)
     }
@@ -25,13 +25,13 @@ final class WoofKitTests: XCTestCase {
             switch result {
             case .success(let images):
                 print(images)
+                expectation.fulfill()
             case .failure(let error):
                 print(error)
                 XCTFail()
             }
-            expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 0.5)
     }
 }
 

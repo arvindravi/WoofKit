@@ -36,11 +36,13 @@ public class WoofKit {
     public enum Error: LocalizedError {
         case invalidResponse
         case failedToDecodeData
+        case failedToFetchRequestedImages
         
         public var errorDescription: String? {
             switch self {
-            case .invalidResponse: return "Error Fetching Woof Data: Invalid Response"
-            case .failedToDecodeData: return "Error Fetching Woof Data: Failed to decode data"
+            case .invalidResponse: return "Error Fetching Woof Data: Invalid Response."
+            case .failedToDecodeData: return "Error Fetching Woof Data: Failed to decode data."
+            case .failedToFetchRequestedImages: return "Error Fetching Woof Data: Failed to fetch images."
             }
         }
     }
@@ -115,8 +117,12 @@ public class WoofKit {
         urls.forEach { url in
             loader.loadImage(for: url as NSURL) { imageResult in
                 switch imageResult {
-                case .success(let image): images.append(image)
-                case .failure(let error): print("Error Loading Image: \(error.localizedDescription)")
+                case .success(let image):
+                    images.append(image)
+                    result(.success(images))
+                case .failure(let error):
+                    print("Error Loading Image: \(error.localizedDescription)")
+                    result(.failure(.failedToFetchRequestedImages))
                 }
             }
         }
