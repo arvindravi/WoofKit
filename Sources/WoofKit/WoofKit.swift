@@ -28,7 +28,12 @@ public class WoofKit {
         var url: URL {
             switch self {
             case .list: return Endpoint.baseURL.appendingPathComponent("breeds/list/all")
-            case .images(let breed, let subBreed): return Endpoint.baseURL.appendingPathComponent("breed/\(breed)/images")
+            case .images(let breed, let subBreed):
+                if let subBreed = subBreed {
+                    return Endpoint.baseURL.appendingPathComponent("breed/\(breed)/\(subBreed)/images")
+                } else {
+                    return Endpoint.baseURL.appendingPathComponent("breed/\(breed)/images")
+                }
             }
         }
     }
@@ -103,10 +108,10 @@ public class WoofKit {
         }
         
         let imageURLs = Array(decoded.message.shuffled().prefix(10))
-        images(for: imageURLs, result: result)
+        loadImages(for: imageURLs, result: result)
     }
     
-    private func images(for urls: [URL], result: @escaping ImagesListResult) {
+    private func loadImages(for urls: [URL], result: @escaping ImagesListResult) {
         guard urls.count > 0 else {
             result(.failure(.invalidResponse))
             return
@@ -117,9 +122,7 @@ public class WoofKit {
             loader.loadImage(for: url as NSURL) { imageResult in
                 switch imageResult {
                 case .success(let image): result(.success([image]))
-                case .failure(let error):
-                    print("Error Loading Image: \(error.localizedDescription)")
-                    result(.failure(.failedToFetchRequestedImages))
+                case .failure: result(.failure(.failedToFetchRequestedImages))
                 }
             }
         }

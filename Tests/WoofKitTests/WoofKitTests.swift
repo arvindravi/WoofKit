@@ -8,15 +8,13 @@ final class WoofKitTests: XCTestCase {
         WoofKit.shared.fetchBreeds { result in
             switch result {
             case .success(let breeds):
-                print(breeds)
                 XCTAssert(breeds.count > 0)
                 expectation.fulfill()
-            case .failure(let error):
-                print(error)
+            case .failure:
                 XCTFail()
             }
         }
-        wait(for: [expectation], timeout: 0.3)
+        wait(for: [expectation], timeout: 0.5)
     }
     
     func test_getsListOfImagesForBreed() {
@@ -24,10 +22,9 @@ final class WoofKitTests: XCTestCase {
         WoofKit.shared.fetchImages(for: Breed.mockBreed.name) { (result) in
             switch result {
             case .success(let images):
-                print(images)
+                XCTAssert(images.count > 0)
                 expectation.fulfill()
-            case .failure(let error):
-                print(error)
+            case .failure:
                 XCTFail()
             }
         }

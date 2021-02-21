@@ -8,7 +8,7 @@
 import Foundation
 
 struct ImagesRawResponse {
-    let message: [URL]
+    let message: Set<URL>
     let status: String
     
     enum CodingKeys: String, CodingKey {
@@ -19,7 +19,7 @@ struct ImagesRawResponse {
 extension ImagesRawResponse: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        message = try container.decode([URL].self, forKey: .message)
+        message = try container.decode(Set<URL>.self, forKey: .message)
         status = try container.decode(String.self, forKey: .status)
     }
 }

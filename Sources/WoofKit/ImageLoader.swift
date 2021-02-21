@@ -8,17 +8,21 @@
 import Foundation
 import UIKit
 
-protocol ImageLoading: AnyObject {
-    func loadImage(for url: URL, completion: @escaping (Result<UIImage, Error>) -> Void)
-}
-
 class ImageLoader {
+ 
+    // MARK: - Custom Types -
     
     public enum Error: Swift.Error {
         case failedToLoadImage
     }
     
-    public var cache = NSCache<NSURL, UIImage>()
+    // MARK: - Properties -
+    
+    var cache = NSCache<NSURL, UIImage>()
+    
+    // MARK: - Interface -
+    
+    // MARK: - Methods -
     
     func loadImage(for url: NSURL, completion: @escaping (Result<UIImage, Error>) -> Void) {
         if let cachedImage = image(url: url) {
