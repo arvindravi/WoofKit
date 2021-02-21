@@ -120,6 +120,5 @@ public class WoofKit {
                 }
             }
         }
-        print(images)
     }
 }

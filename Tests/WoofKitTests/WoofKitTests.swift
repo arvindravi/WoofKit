@@ -21,7 +21,7 @@ final class WoofKitTests: XCTestCase {
     
     func test_getsListOfImagesForBreed() {
         let expectation = XCTestExpectation(description: "wait")
-        WoofKit.shared.fetchImages(for: .mockBreed) { (result) in
+        WoofKit.shared.fetchImages(for: Breed.mockBreed.name) { (result) in
             switch result {
             case .success(let images):
                 print(images)

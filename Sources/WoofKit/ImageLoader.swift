@@ -29,18 +29,18 @@ class ImageLoader {
         }
         
         let session = URLSession(configuration: .ephemeral)
-        print("about to load")
         session.dataTask(with: url as URL) { (data, response, error) in
-            print("dice or no?")
             guard let data = data, let image = UIImage(data: data) else {
                 DispatchQueue.main.async {
                     completion(.failure(.failedToLoadImage))
                 }
                 return
             }
-            print("YAY: \(image)")
             self.cache.setObject(image, forKey: url)
-        }
+            DispatchQueue.main.async {
+                completion(.success(image))
+            }
+        }.resume()
     }
     
     private func image(url: NSURL) -> UIImage? {
