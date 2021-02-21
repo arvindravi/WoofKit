@@ -23,12 +23,12 @@ public class WoofKit {
         static let baseURL = URL(string: "https://dog.ceo/api/")!
         
         case list
-        case images(ofBreed: Breed)
+        case images(ofBreed: String, subBreed: String?)
         
         var url: URL {
             switch self {
             case .list: return Endpoint.baseURL.appendingPathComponent("breeds/list/all")
-            case .images(let breed): return Endpoint.baseURL.appendingPathComponent("breed/\(breed.name)/images")
+            case .images(let breed, let subBreed): return Endpoint.baseURL.appendingPathComponent("breed/\(breed)/images")
             }
         }
     }
@@ -62,9 +62,8 @@ public class WoofKit {
         }.resume()
     }
     
-    public func fetchImages(for breed: Breed, result: @escaping ImagesListResult) {
-        print(Endpoint.images(ofBreed: breed).url)
-        URLSession.shared.dataTask(with: Endpoint.images(ofBreed: breed).url) { (data, response, error) in
+    public func fetchImages(for breed: String, subBreed: String? = nil, result: @escaping ImagesListResult) {
+        URLSession.shared.dataTask(with: Endpoint.images(ofBreed: breed, subBreed: subBreed).url) { (data, response, error) in
             guard let response = response as? HTTPURLResponse,
                   response.statusCode == 200 else {
                 result(.failure(.invalidResponse))
