@@ -14,6 +14,7 @@ public class WoofKit {
     // MARK: - Public -
     
     public typealias BreedsListResult = (Result<[Breed], Error>) -> Void
+    public typealias ImagesListResult = (Result<[UIImage], Error>) -> Void
     public static let shared: WoofKit = WoofKit()
     
     // MARK: - Custom Types
@@ -27,7 +28,7 @@ public class WoofKit {
         var url: URL {
             switch self {
             case .list: return Endpoint.baseURL.appendingPathComponent("breeds/list/all")
-            case .images(let breed): return Endpoint.baseURL.appendingPathComponent("/breed/\(breed.name)/images")
+            case .images(let breed): return Endpoint.baseURL.appendingPathComponent("breed/\(breed.name)/images")
             }
         }
     }
@@ -61,6 +62,18 @@ public class WoofKit {
         }.resume()
     }
     
+    public func fetchImages(for breed: Breed, result: @escaping ImagesListResult) {
+        print(Endpoint.images(ofBreed: breed).url)
+        URLSession.shared.dataTask(with: Endpoint.images(ofBreed: breed).url) { (data, response, error) in
+            guard let response = response as? HTTPURLResponse,
+                  response.statusCode == 200 else {
+                result(.failure(.invalidResponse))
+                return
+            }
+            self.handleData(data: data, result: result)
+        }.resume()
+    }
+    
     // MARK: - Private -
     
     private func handleData(data: Data?, result: @escaping BreedsListResult) {
@@ -75,5 +88,39 @@ public class WoofKit {
         }
         
         result(.success(decoded.message))
+    }
+    
+    private func handleData(data: Data?, result: @escaping ImagesListResult) {
+        guard let data = data else {
+            result(.failure(.failedToDecodeData))
+            return
+        }
+        
+        guard let decoded = try? decoder.decode(ImagesRawResponse.self, from: data) else {
+            result(.failure(.failedToDecodeData))
+            return
+        }
+        
+        let imageURLs = Array(decoded.message.shuffled().prefix(10))
+        images(for: imageURLs, result: result)
+    }
+    
+    private func images(for urls: [URL], result: @escaping ImagesListResult) {
+        guard urls.count > 0 else {
+            result(.failure(.invalidResponse))
+            return
+        }
+        
+        let loader = ImageLoader()
+        var images = [UIImage]()
+        urls.forEach { url in
+            loader.loadImage(for: url as NSURL) { imageResult in
+                switch imageResult {
+                case .success(let image): images.append(image)
+                case .failure(let error): print("Error Loading Image: \(error.localizedDescription)")
+                }
+            }
+        }
+        print(images)
     }
 }
