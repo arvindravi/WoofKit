@@ -113,13 +113,10 @@ public class WoofKit {
         }
         
         let loader = ImageLoader()
-        var images = [UIImage]()
         urls.forEach { url in
             loader.loadImage(for: url as NSURL) { imageResult in
                 switch imageResult {
-                case .success(let image):
-                    images.append(image)
-                    result(.success(images))
+                case .success(let image): result(.success([image]))
                 case .failure(let error):
                     print("Error Loading Image: \(error.localizedDescription)")
                     result(.failure(.failedToFetchRequestedImages))
